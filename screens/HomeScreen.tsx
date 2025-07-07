@@ -5,14 +5,52 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
+import * as ImagePicker from 'expo-image-picker';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
+
+  const openCamera = async () => {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Permission denied', 'Camera access is required');
+      return;
+    }
+
+    const result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 1,
+    });
+
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+      console.log('Camera Image URI:', result.assets[0].uri);
+      // Navigate or handle image as needed
+    }
+  };
+
+  const openGallery = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Permission denied', 'Gallery access is required');
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 1,
+    });
+
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+      console.log('Gallery Image URI:', result.assets[0].uri);
+      // Navigate or handle image as needed
+    }
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -34,13 +72,13 @@ const HomeScreen = () => {
 
       {/* Camera & Gallery Buttons */}
       <View style={styles.buttonRow}>
-        <TouchableOpacity style={[styles.button, { backgroundColor: '#4A90E2' }]}>
+        <TouchableOpacity style={[styles.button, { backgroundColor: '#4A90E2' }]} onPress={openCamera}>
           <Ionicons name="camera" size={24} color="#fff" />
           <Text style={styles.buttonText}>Camera</Text>
           <Ionicons name="chevron-forward" size={24} color="#fff" />
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.button, { backgroundColor: '#00BBD3' }]}>
+        <TouchableOpacity style={[styles.button, { backgroundColor: '#00BBD3' }]} onPress={openGallery}>
           <Ionicons name="image" size={24} color="#fff" />
           <Text style={styles.buttonText}>Gallery</Text>
           <Ionicons name="chevron-forward" size={24} color="#fff" />

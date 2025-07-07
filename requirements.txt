@@ -40,3 +40,7 @@ react-native-webview  # If you plan to display OCR results via web
 typescript
 @types/react
 @types/react-native
+
+npx expo install expo-camera expo-image-picker
+npm install react-native-upi-pay
+
