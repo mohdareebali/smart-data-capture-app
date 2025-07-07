@@ -1,20 +1,34 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { NavigationContainer } from '@react-navigation/native';
+
+import HomeScreen from './screens/HomeScreen';
+import MyScansScreen from './screens/MyScansScreen';
+import PremiumScreen from './screens/PremiumScreen';
+import FAQScreen from './screens/FAQScreen';
+import SettingsScreen from './screens/SettingsScreen';
+import InviteScreen from './screens/InviteScreen';
+
+const Drawer = createDrawerNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Drawer.Navigator
+        initialRouteName="Home"
+        screenOptions={{
+          headerShown: false,
+          drawerActiveTintColor: '#EF156F',
+          drawerLabelStyle: { fontWeight: 'bold' },
+        }}
+      >
+        <Drawer.Screen name="Home" component={HomeScreen} />
+        <Drawer.Screen name="My Scans" component={MyScansScreen} />
+        <Drawer.Screen name="Get Premium" component={PremiumScreen} />
+        <Drawer.Screen name="F.A.Q" component={FAQScreen} />
+        <Drawer.Screen name="Settings" component={SettingsScreen} />
+        <Drawer.Screen name="Invite Friend" component={InviteScreen} />
+      </Drawer.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
